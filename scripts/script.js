@@ -1,8 +1,54 @@
 const todo = {}
 
-const todoForm = document.querySelector('.todo-form');
+todo.todos = []
 
-todoForm.addEventListener('submit', (e) => {
+todo.DOMstrings = {
+    todoForm: document.querySelector('.todo-form'),
+    addButton: document.querySelector('.add'),
+    deleteAll: document.querySelector('.clear'),
+    todoList: document.querySelector('.todo-list'),
+    deleteTodo: document.querySelector('.delete')
+}
+
+todo.DOMstrings.deleteAll.addEventListener('click', (e) => {
+
+    todo.DOMstrings.todoList.innerHTML = ''
+
+})
+
+todo.start = () => {
+
+    const todosJSON = localStorage.getItem('todos')
+    todo.todos = todosJSON ? JSON.parse(todosJSON) : []
+
+}
+
+todo.renderTodos = () => {
+
+
+    todo.todos.forEach((item) => {
+
+        const newItem = document.createElement('li')
+
+        newItem.innerHTML = `
+        <button class="delete">X</button> <p>todo: ${item.todo}</p>
+        <p>completed: ${item.completed}</p>
+    `
+        todo.DOMstrings.todoList.append(newItem)
+    })
+
+
+}
+
+todo.storage = (newTodo) => {
+
+    todo.todos.push(newTodo)
+    localStorage.setItem('todos', JSON.stringify(todo.todos))
+
+    todo.renderTodos();
+}
+
+todo.DOMstrings.todoForm.addEventListener('submit', (e) => {
     e.preventDefault()
 
     const todoText = e.target.elements.todo.value
@@ -14,21 +60,23 @@ todoForm.addEventListener('submit', (e) => {
         completed: false
     }
 
-    todo.todoGenerator(newTodo)
+    todo.storage(newTodo)
 
+    todo.renderTodos()
 })
 
+todo.DOMstrings.todoList.addEventListener('click', (e) => {
+    if (e.target.classList.contains('delete')) {
 
-todo.todoGenerator = (todo) => {
+    }
+})
 
-    const list = document.querySelector('.todo-list')
+todo.init = () => {
 
-    const newItem = document.createElement('li')
+    todo.start()
+    todo.renderTodos()
 
-    newItem.innerHTML = `
-        <p>todo: ${todo.todo}</p>
-        <p>completed: ${todo.completed}</p>
-    `
-
-    list.append(newItem)
+    console.log(todo.todos)
 }
+
+todo.init()
