@@ -18,6 +18,10 @@ todo.DOMstrings.deleteAll.addEventListener('click', (e) => {
 todo.start = () => {
     const todosJSON = localStorage.getItem('todos')
     todo.todos = todosJSON ? JSON.parse(todosJSON) : []
+
+    if (todo.todos !== []) {
+        todo.renderTodos()
+    }
 }
 
 todo.renderTodos = () => {
@@ -34,8 +38,6 @@ todo.renderTodos = () => {
     `
         todo.DOMstrings.todoList.append(newItem)
     })
-
-
 }
 
 todo.storage = (newTodo) => {
@@ -65,13 +67,23 @@ todo.DOMstrings.todoForm.addEventListener('submit', (e) => {
 
 todo.DOMstrings.todoList.addEventListener('click', (e) => {
     if (e.target.classList.contains('delete')) {
+        const deletedTodo = e.target.nextSibling.nextSibling.innerText.substring(6)
 
+        todo.todos.filter((selection, index) => {
+            if (selection.todo[index] === deletedTodo[index]) {
+                todo.todos.splice(index, 1)
+
+                todo.storage()
+
+
+                todo.renderTodos()
+            }
+        })
     }
 })
 
 todo.init = () => {
     todo.start()
-    todo.renderTodos()
 }
 
 todo.init()
