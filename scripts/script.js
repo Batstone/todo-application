@@ -34,15 +34,14 @@ todo.renderTodos = () => {
 
         newItem.innerHTML = `
         <button class="delete">X</button> <p>todo: ${item.todo}</p>
+        <button class="completed">Done</button>
         <p>completed: ${item.completed}</p>
     `
         todo.DOMstrings.todoList.append(newItem)
     })
 }
 
-todo.storage = (newTodo) => {
-
-    todo.todos.push(newTodo)
+todo.storage = () => {
 
     localStorage.setItem('todos', JSON.stringify(todo.todos))
 
@@ -61,22 +60,33 @@ todo.DOMstrings.todoForm.addEventListener('submit', (e) => {
         completed: false
     }
 
-    todo.storage(newTodo)
-
+    todo.todos.push(newTodo)
+    todo.storage()
 })
 
 todo.DOMstrings.todoList.addEventListener('click', (e) => {
     if (e.target.classList.contains('delete')) {
         const deletedTodo = e.target.nextSibling.nextSibling.innerText.substring(6)
 
-        todo.todos.filter((selection, index) => {
-            if (selection.todo[index] === deletedTodo[index]) {
-                todo.todos.splice(index, 1)
+        todo.todos.filter((selection) => {
+            if (selection.todo === deletedTodo) {
 
+                const indexSearch = todo.todos.indexOf(selection)
+                todo.todos.splice(indexSearch, 1)
                 todo.storage()
+            }
+        })
+    }
 
+    if (e.target.classList.contains('completed')) {
+        const completedTodo = e.target.previousSibling.previousSibling.innerText.substring(6)
 
-                todo.renderTodos()
+        todo.todos.filter((selection) => {
+            if (selection.todo === completedTodo) {
+                const indexSearch = todo.todos.indexOf(selection)
+
+                todo.todos[indexSearch].completed = true
+                todo.storage()
             }
         })
     }
