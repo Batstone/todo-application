@@ -11,20 +11,18 @@ todo.DOMstrings = {
 }
 
 todo.DOMstrings.deleteAll.addEventListener('click', (e) => {
-
     todo.DOMstrings.todoList.innerHTML = ''
-
+    localStorage.clear();
 })
 
 todo.start = () => {
-
     const todosJSON = localStorage.getItem('todos')
     todo.todos = todosJSON ? JSON.parse(todosJSON) : []
-
 }
 
 todo.renderTodos = () => {
 
+    todo.DOMstrings.todoList.innerHTML = ''
 
     todo.todos.forEach((item) => {
 
@@ -43,6 +41,7 @@ todo.renderTodos = () => {
 todo.storage = (newTodo) => {
 
     todo.todos.push(newTodo)
+
     localStorage.setItem('todos', JSON.stringify(todo.todos))
 
     todo.renderTodos();
@@ -62,7 +61,6 @@ todo.DOMstrings.todoForm.addEventListener('submit', (e) => {
 
     todo.storage(newTodo)
 
-    todo.renderTodos()
 })
 
 todo.DOMstrings.todoList.addEventListener('click', (e) => {
@@ -72,11 +70,8 @@ todo.DOMstrings.todoList.addEventListener('click', (e) => {
 })
 
 todo.init = () => {
-
     todo.start()
     todo.renderTodos()
-
-    console.log(todo.todos)
 }
 
 todo.init()
