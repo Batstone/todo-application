@@ -33,8 +33,9 @@ todo.renderTodos = () => {
         const newItem = document.createElement('li')
 
         newItem.innerHTML = `
-        <button class="delete">X</button> <p>todo: ${item.todo}</p>
-        <button class="completed">Done</button>
+        <i class="fas fa-trash-alt delete"></i>
+        <p>todo: ${item.todo}</p>
+        <i class="fas fa-check-square completed"></i>
         <p>completed: ${item.completed}</p>
     `
         todo.DOMstrings.todoList.append(newItem)
