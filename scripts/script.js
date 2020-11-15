@@ -33,10 +33,17 @@ todo.renderTodos = () => {
         const newItem = document.createElement('li')
 
         newItem.innerHTML = `
-        <i class="fas fa-trash-alt delete"></i>
-        <p>todo: ${item.todo}</p>
-        <i class="fas fa-check-square completed"></i>
-        <p>completed: ${item.completed}</p>
+
+        <div class="new-todo-container">
+            <div class="new-todo-text">
+                <p>todo: ${item.todo}</p>
+                <p>completed: ${item.completed}</p>
+            </div>
+            <div class="icon-column">
+                <i class="fas fa-trash-alt delete"></i>
+                <i class="fas fa-check-square completed"></i>
+            </div>
+        </div>
     `
         todo.DOMstrings.todoList.append(newItem)
     })
@@ -66,8 +73,11 @@ todo.DOMstrings.todoForm.addEventListener('submit', (e) => {
 })
 
 todo.DOMstrings.todoList.addEventListener('click', (e) => {
+
     if (e.target.classList.contains('delete')) {
-        const deletedTodo = e.target.nextSibling.nextSibling.innerText.substring(6)
+        const deletedTodo = e.target.parentNode.previousElementSibling.firstElementChild.innerText.substring(6)
+
+        console.log(deletedTodo)
 
         todo.todos.filter((selection) => {
             if (selection.todo === deletedTodo) {
@@ -80,7 +90,7 @@ todo.DOMstrings.todoList.addEventListener('click', (e) => {
     }
 
     if (e.target.classList.contains('completed')) {
-        const completedTodo = e.target.previousSibling.previousSibling.innerText.substring(6)
+        const completedTodo = e.target.parentNode.previousElementSibling.firstElementChild.innerText.substring(6)
 
         todo.todos.filter((selection) => {
             if (selection.todo === completedTodo) {
