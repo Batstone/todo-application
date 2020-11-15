@@ -23,6 +23,10 @@ header {
     margin-bottom: 50px;
 }
 
+h1 {
+    font-size: 50px;
+}
+
 .form-container {
     display: flex;
     flex-direction: column;
@@ -74,7 +78,7 @@ ul {
 
 .completed {
     margin-top: 20px;
-    color: #FE5F55;
+    color: red;
 }
 
 .completed-selected {
