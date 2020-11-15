@@ -1,3 +1,4 @@
+
 const todo = {}
 
 todo.todos = []
@@ -12,6 +13,7 @@ todo.DOMstrings = {
 
 todo.DOMstrings.deleteAll.addEventListener('click', (e) => {
     todo.DOMstrings.todoList.innerHTML = ''
+    todo.todos = []
     localStorage.clear();
 })
 
@@ -92,10 +94,11 @@ todo.DOMstrings.todoList.addEventListener('click', (e) => {
     if (e.target.classList.contains('completed')) {
         const completedTodo = e.target.parentNode.previousElementSibling.firstElementChild.innerText.substring(6)
 
+
+
         todo.todos.filter((selection) => {
             if (selection.todo === completedTodo) {
                 const indexSearch = todo.todos.indexOf(selection)
-
                 todo.todos[indexSearch].completed = true
                 todo.storage()
             }
