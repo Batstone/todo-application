@@ -147,25 +147,27 @@ todo.DOMstrings.todoFilter.addEventListener('change', (e) => {
 
     // If statements to check which option has been selected
     if (selection === 'time') {
-
         // Using the start function here to get the todos out of local storage and rerender them. This would sort them by the time they were put into storage
         todo.start()
-    } else if (selection === 'incomplete') {
+    } else if (selection === 'alphabetical') {
+        //Sorting todos by alphabetical order based on the user text
+        const filteredTodos = todo.todos.sort((a, b) => {
+            return a.todo > b.todo
+        })
 
+        todo.renderTodos(filteredTodos)
+    } else if (selection === 'incomplete') {
         // Filtering by incomplete todos
         const filteredTodos = todo.todos.filter((todo) => {
             return !todo.completed
         })
 
         todo.renderTodos(filteredTodos)
-
-    } else if (selection === 'alphabetical') {
-
-        //Sorting todos by alphabetical order based on the user text
-        const filteredTodos = todo.todos.sort((a, b) => {
-            return a.todo > b.todo
+    } else if (selection === 'complete') {
+        // Filtering by completed todos
+        const filteredTodos = todo.todos.filter((todo) => {
+            return todo.completed
         })
-
         todo.renderTodos(filteredTodos)
     }
 })
