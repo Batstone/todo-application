@@ -1,4 +1,3 @@
-
 const todo = {}
 
 todo.todos = []
@@ -40,6 +39,7 @@ todo.renderTodos = () => {
             <div class="new-todo-text">
                 <p>todo: ${item.todo}</p>
                 <p>completed: ${item.completed}</p>
+                <p>id: ${item.id}</p>
             </div>
             <div class="icon-column">
                 <i class="fas fa-trash-alt delete"></i>
@@ -67,7 +67,8 @@ todo.DOMstrings.todoForm.addEventListener('submit', (e) => {
 
     const newTodo = {
         todo: todoText,
-        completed: false
+        completed: false,
+        id: uuidv4()
     }
 
     todo.todos.push(newTodo)
@@ -77,12 +78,10 @@ todo.DOMstrings.todoForm.addEventListener('submit', (e) => {
 todo.DOMstrings.todoList.addEventListener('click', (e) => {
 
     if (e.target.classList.contains('delete')) {
-        const deletedTodo = e.target.parentNode.previousElementSibling.firstElementChild.innerText.substring(6)
-
-        console.log(deletedTodo)
+        const deletedTodo = e.target.parentNode.previousElementSibling.lastElementChild.innerText.substring(4)
 
         todo.todos.filter((selection) => {
-            if (selection.todo === deletedTodo) {
+            if (selection.id === deletedTodo) {
 
                 const indexSearch = todo.todos.indexOf(selection)
                 todo.todos.splice(indexSearch, 1)
