@@ -10,7 +10,8 @@ todo.DOMstrings = {
     addButton: document.querySelector('.add'),
     deleteAll: document.querySelector('.clear'),
     todoList: document.querySelector('.todo-list'),
-    deleteTodo: document.querySelector('.delete')
+    deleteTodo: document.querySelector('.delete'),
+    todoFilter: document.querySelector('.todo-filter')
 }
 
 // The listener for deleting all the todos on the page
@@ -30,33 +31,43 @@ todo.start = () => {
 
     // If there is something in storage, then we want to render them on the page
     if (todo.todos !== []) {
-        todo.renderTodos()
+        todo.renderTodos(todo.todos)
     }
 }
 
 // The render function that paints the DOM with each todo
-todo.renderTodos = () => {
+todo.renderTodos = (todos) => {
 
     // Start by clearing the UL list so that it can be updated properly
     todo.DOMstrings.todoList.innerHTML = ''
 
-    todo.todos.forEach((item) => {
+    todos.forEach((item) => {
 
         // Create a new li for each todo
         const newItem = document.createElement('li')
+
+        let complete
+
+        if (item.completed) {
+            complete = `<i class="fas fa-check-square complete"></i>`
+            newItem.classList.toggle('completed')
+        } else {
+            complete = `<i class="fas fa-check-square incomplete"></i>`
+            newItem.classList.toggle('incompleted')
+        }
 
         // The code that will be contained in each li (todo).
         newItem.innerHTML = `
 
         <div class="new-todo-container">
             <div class="new-todo-text">
-                <p>todo: ${item.todo}</p>
-                <p>completed: ${item.completed}</p>
+                <p><span>Todo:</span> ${item.todo}</p>
+                <p><span>Completed:</span> ${item.completed}</p>
                 <p>id: ${item.id}</p>
             </div>
             <div class="icon-column">
                 <i class="fas fa-trash-alt delete"></i>
-                <i class="fas fa-check-square completed"></i>
+                ${complete}
             </div>
         </div>
     `
@@ -71,28 +82,32 @@ todo.storage = () => {
     localStorage.setItem('todos', JSON.stringify(todo.todos))
 
     // Every time storage recieves an update, we want to rerender the list of todos
-    todo.renderTodos();
+    todo.renderTodos(todo.todos);
 }
 
 // The form for adding a new todo item
 todo.DOMstrings.todoForm.addEventListener('submit', (e) => {
     e.preventDefault()
 
-    const todoText = e.target.elements.todo.value
+    const todoText = e.target.elements.todo.value.trim()
 
     e.target.elements.todo.value = ''
 
-    const newTodo = {
-        todo: todoText,
-        completed: false,
-        id: uuidv4()
+    if (todoText === '') {
+        e.target.elements.todo.placeholder = 'Please enter a todo'
+    } else {
+        const newTodo = {
+            todo: todoText,
+            completed: false,
+            id: uuidv4()
+        }
+        // Pushing the todo into the local array
+        todo.todos.push(newTodo)
+
+        // Adding the new todo into storage
+        todo.storage()
     }
 
-    // Pushing the todo into the local array
-    todo.todos.push(newTodo)
-
-    // Adding the new todo into storage
-    todo.storage()
 })
 
 // An example of event delegation. The listener is on the UL but we are specifially looking for events that fire on our delete and completed icons
@@ -112,7 +127,7 @@ todo.DOMstrings.todoList.addEventListener('click', (e) => {
     }
 
     // The completed icon event
-    if (e.target.classList.contains('completed')) {
+    if (e.target.classList.contains('incomplete') || e.target.classList.contains('complete')) {
         const selectedTodo = e.target.parentNode.previousElementSibling.lastElementChild.innerText.substring(4)
 
         todo.todos.filter((selection) => {
@@ -122,6 +137,36 @@ todo.DOMstrings.todoList.addEventListener('click', (e) => {
                 todo.storage()
             }
         })
+    }
+})
+
+todo.DOMstrings.todoFilter.addEventListener('change', (e) => {
+
+    // Getting the value of the selected option
+    const selection = e.target.value
+
+    // If statements to check which option has been selected
+    if (selection === 'time') {
+
+        // Using the start function here to get the todos out of local storage and rerender them. This would sort them by the time they were put into storage
+        todo.start()
+    } else if (selection === 'incomplete') {
+
+        // Filtering by incomplete todos
+        const filteredTodos = todo.todos.filter((todo) => {
+            return !todo.completed
+        })
+
+        todo.renderTodos(filteredTodos)
+
+    } else if (selection === 'alphabetical') {
+
+        //Sorting todos by alphabetical order based on the user text
+        const filteredTodos = todo.todos.sort((a, b) => {
+            return a.todo > b.todo
+        })
+
+        todo.renderTodos(filteredTodos)
     }
 })
 

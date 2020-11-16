@@ -18,13 +18,24 @@
 
     <main>
 
-        <div class="form-container">
-            <form action="" class="todo-form">
-                <input type="text" name="todo" placeholder="Enter your todo">
-                <button class="add">Submit</button>
+        <div class="form-grid-container">
+            <div class="submit-form-container">
+                <form action="" class="todo-form">
+                    <label for="todo" class="visuallyHidden">Enter a todo:</label>
+                    <input type="text" name="todo" id="todo" placeholder="Enter your todo">
+                    <button class="add">Submit</button>
+                </form>
+                <button class="clear">Delete All</button>
+            </div>
 
-            </form>
-            <button class="clear">Delete All</button>
+            <div class="select-container">
+                <label for="filter">Filter your todos:</label>
+                <select name="todo-filter" id="filter" class="todo-filter">
+                    <option value="time" selected>Time</option>
+                    <option value="incomplete">Incomplete</option>
+                    <option value="alphabetical">Alphabetical</option>
+                </select>
+            </div>
         </div>
 
         <div>

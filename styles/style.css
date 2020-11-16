@@ -27,10 +27,29 @@ h1 {
     font-size: 50px;
 }
 
-.form-container {
+.form-grid-container {
+    display: grid;
+    grid-template-columns: 
+    repeat(auto-fit, minmax(200px, 1fr));
+    align-items: start;
+    grid-gap: 10px;
+}
+
+.submit-form-container {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.select-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.select-container select {
+    margin-top: 15px;
+    width: 50%;
 }
 
 form {
@@ -45,8 +64,15 @@ form {
 }
 
 li {
-    border: 2px solid black;
     padding: 10px;
+}
+
+.incompleted {
+    border: 2px solid rgb(207, 46, 46);
+}
+
+.completed {
+    border: 2px solid rgb(90, 192, 50);
 }
 
 ul {
@@ -64,6 +90,10 @@ ul {
     justify-content: space-between;
 }
 
+.new-todo-text p span {
+    font-weight: bold;
+}
+
 .new-todo-text p:last-child  {
     display: none;
 }
@@ -78,13 +108,12 @@ ul {
     margin-left: 20px;
 }
 
-.completed {
+.incomplete {
     margin-top: 20px;
     color: red;
 }
 
-.completed-selected {
+.complete {
+    margin-top: 20px;
     color: green;
 }
-
-/* <i class="fas fa-minus-circle"></i> */
